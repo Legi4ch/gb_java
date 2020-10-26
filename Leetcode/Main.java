@@ -4,10 +4,11 @@ public class Main {
     public static void main(String[] args) throws MatrixInitErrorException {
 
         try {
-            Reverse matrix = new Reverse(6,6);
-            System.out.println(matrix.toString());
+            Reverse matrix = new Reverse(9,9);
+            //System.out.println(matrix.toString());
             matrix.fillCCW();
             System.out.println(matrix.toString());
+
 
         }
         catch (MatrixInitErrorException e) {

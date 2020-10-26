@@ -23,7 +23,7 @@ class Reverse {
                     this.matrix[i][j] = k++;
                 }
             }
-            this.levels = getLevels(_rows);
+            this.levels = getLayersCount(_rows);
         } else {
             throw new MatrixInitErrorException("Both of cols and rows should be above zero and should be square!");
         }
@@ -35,7 +35,7 @@ class Reverse {
         String result = new String();
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
-                result += matrix[i][j] + " ";
+                result += (matrix[i][j] / 10 == 0) ? " "+ matrix[i][j] + " ": matrix[i][j] + " ";
             }
             result += "\n";
         }
@@ -43,7 +43,7 @@ class Reverse {
     }
 
 
-    //обход всей матрицы против часовой стрелки
+    //обход всей матрицы против часовой стрелки на всех уровнях
     public void fillCCW() {
         int len = 0;
         for (int i = 0; i < this.levels; i++) {
@@ -63,19 +63,19 @@ class Reverse {
      */
     private void ccvLayerFill(int layer,int put) {
 
-        //первый столбец
+        //первый левый столбец
         for (int i = layer; i < this.rows - layer; i++) {
             this.matrix[i][layer] = put++;
         }
-        //поворот на 90 и нижняя строка / угловой элемент пропускаем
+        //поворот на 90° и нижняя строка / угловой элемент пропускаем
         for (int i = layer + 1; i < this.cols - layer; i++) {
             this.matrix[this.rows - 1 - layer][i] = put++;
         }
-        //поворот на 90 и правый столбик / угол снова пропускаем
+        //поворот на 90° и правый столбик / угол снова пропускаем
         for (int i = this.rows - 2 - layer; i >= layer; i--) {
             this.matrix[i][this.cols - 1 - layer] = put++;
         }
-        //поворот на 90 верхняя строка / пропускаем два угла, левый и правый
+        //поворот на 90° верхняя строка / пропускаем уже два верхних угла, левый и правый
         for (int i = this.cols - 2 - layer; i > layer; i--) {
             this.matrix[layer][i] = put++;
         }
@@ -83,30 +83,17 @@ class Reverse {
     }
 
     // возвращает периметр нужного слоя массива
-    private int getLayerPerimetr(int layer) {
+    public int getLayerPerimetr(int layer) {
         int p = 0;
-        //первый столбец
-        for (int i = layer; i < this.rows - layer; i++) {
+        for (int i = layer; i < this.cols - 1 - layer; i++) {
             p++;
         }
-        //поворот на 90 и нижняя строка / угловой элемент пропускаем
-        for (int i = layer + 1; i < this.cols - layer; i++) {
-            p++;
-        }
-        //поворот на 90 и правый столбик / угол снова пропускаем
-        for (int i = this.rows - 2 - layer; i >= layer; i--) {
-            p++;
-        }
-        //поворот на 90 верхняя строка / пропускаем два угла, левый и правый
-        for (int i = this.cols - 2 - layer; i > layer; i--) {
-            p++;
-        }
-        return p;
+        return (p*4);
     }
 
 
     // Для возврата уровня вложенности матрицы
-    private int getLevels(int _rows) {
+    private int getLayersCount(int _rows) {
         if (_rows % 2 == 0) {
             return (_rows / 2);
         } else {
