@@ -1,7 +1,7 @@
 package Leetcode;
 
 /**
- * На вход подается размер двумерного массива
+ * На вход подается размер двумерного квадратного массива
  * выводит заполенный инкрементом массив по спирали против часовой стрелки
  */
 
@@ -16,18 +16,21 @@ class Reverse {
             this.matrix = new int[_rows][_cols];
             this.rows = _rows;
             this.cols = _cols;
-
-            int k = 0;
-            for (int i = 0; i < _rows; i++) {
-                for (int j = 0; j < _cols; j++) {
-                    this.matrix[i][j] = k++;
-                }
-            }
             this.levels = getLayersCount(_rows);
+            fillByIncrement(_rows,_cols);
         } else {
             throw new MatrixInitErrorException("Both of cols and rows should be above zero and should be square!");
         }
+    }
 
+    //заполняем инкрементом по дефолту
+    private void fillByIncrement(int _rows,int _cols) {
+        int k = 0;
+        for (int i = 0; i < _rows; i++) {
+            for (int j = 0; j < _cols; j++) {
+                this.matrix[i][j] = k++;
+            }
+        }
     }
 
     @Override
@@ -35,7 +38,7 @@ class Reverse {
         String result = new String();
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
-                result += (matrix[i][j] / 10 == 0) ? " "+ matrix[i][j] + " ": matrix[i][j] + " ";
+                result += (matrix[i][j] / 10 == 0) ? " " + matrix[i][j] + " " : matrix[i][j] + " ";
             }
             result += "\n";
         }
@@ -47,12 +50,8 @@ class Reverse {
     public void fillCCW() {
         int len = 0;
         for (int i = 0; i < this.levels; i++) {
-            if (i == 0) {
-                ccvLayerFill(i,0);
-            } else {
-                len += getLayerPerimetr(i - 1);
-                ccvLayerFill(i,len);
-            }
+            len += getLayerPerimetr(i - 1);
+            ccvLayerFill(i,len);
         }
     }
 
@@ -83,12 +82,15 @@ class Reverse {
     }
 
     // возвращает периметр нужного слоя массива
-    public int getLayerPerimetr(int layer) {
+    private int getLayerPerimetr(int layer) {
+        if (layer < 0) {
+            return 0;
+        }
         int p = 0;
         for (int i = layer; i < this.cols - 1 - layer; i++) {
             p++;
         }
-        return (p*4);
+        return (p * 4);
     }
 
 
