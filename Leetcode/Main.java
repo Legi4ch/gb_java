@@ -13,7 +13,7 @@ public class Main {
             System.out.println(e.getMessage());
         }
         time = System.nanoTime() - time;
-        System.out.printf("Elapsed %,9.3f ms\n", time/1_000_000.0);
+        System.out.printf("Elapsed %,9.3f ms\n", time/1_000_000.0); 
     }
 
 
